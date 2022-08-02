@@ -161,14 +161,17 @@ html * {
 
 .reveal ul {
   list-style-type: disc;
+  font-size: 0.75em;
 }
 
 .reveal ul ul {
   list-style-type: square;
+  font-size: 0.75em;
 }
 
 .reveal ul ul ul {
   list-style-type: circle;
+  font-size: 0.75em;
 }
 
 .reveal ul ul,
@@ -224,6 +227,7 @@ html * {
   font-family: var(--r-code-font);
   text-transform: none;
   tab-size: 2;
+  color: cornflowerblue;
 }
 
 .reveal pre code {
