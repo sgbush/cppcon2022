@@ -17,33 +17,46 @@ C++ is often talked about in terms of what cannot or should not be done in the c
 * Embedded product developer, C++ evangelist
 ---
 # Agenda
-* `constexpr` for Lookup Table Generation
-* `constexpr` for Developer-Friendly Constructs
-* GPIO configuration using `std::array`
+* Compile-Time Lookup Table Generation
+* User-Defined Literals for Developer-Friendly Constructs
+* GPIO configuration
 * Lean stream-based IO
 * Macro-free code {in|ex}clusion
-* Heap memory management for allocate-once 
-* Override `new()` for fine-grained memory tracking
 * Relentless use of `enum`s
 * Use `std::chrono` like a boss
 * Create `mcu::random_device` and get `random` stuff for free
+* Heap memory management for allocate-once 
+* Override `new()` for fine-grained memory tracking
 * Use linker symbols in application code
 ---
 # Companion Repository
 [(https://github.com/sgbush/cppcon2022](https://github.com/sgbush/cppcon2022)
 ---
+# Create Lookup Tables Using Compile-Time Expressions
+---
 # Compiler-Driven Lookup Table Generation
-Why: Separate maintenance of spreadsheets, etc., is painful and prone to error
+The Old Way
 ```c++
+const float TemperatureFromThermistor[] = { 1.23456, ... };
 ```
+* Generate via spreadsheet and copy and paste
+* Generate via script and copy and paste
+* Generate via script and incorporate into build system
+Notes: Where does this table come from?  It must be maintained separately via spreadsheet or script.  Often, we change component values which necessitates re-creating lookup tables.  What if we check in a source code change and recompile, and it is all taken care of?
+---
+# Compiler-Driven Lookup Table Generation
 Some considerations
 * Constants in embedded system must be carefully crafted to end up (usually) in the `.rodata` section
     * this results in constants being placed in flash - and not copied to RAM
 * It is common for hardware and firmware to have to evolve together
     * example: changing resistor values to tune the performance of the system
+[image](image url "https://www.allaboutcircuits.com/uploads/articles/TI_IA_thermistor_figure1.jpg")
+<img src="https://www.allaboutcircuits.com/uploads/articles/TI_IA_thermistor_figure1.jpg">
 ---
+# Compiler-Driven Lookup Table Generation
 Better: Incorporate governing equations into the code, and let the compiler generate constant tables
-* 
+` $$ 1/T = A + B ln(R) + C ln(R)^3 $$`
+` $$ R =  $$ `
 ---
 # Developer-Friendly Numeric Structures
 ---
