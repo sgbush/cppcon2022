@@ -55,8 +55,8 @@ Some considerations
 ---
 # Compiler-Driven Lookup Table Generation
 Better: Incorporate governing equations into the code, and let the compiler generate constant tables
-` $$ 1/T = A + B ln(R) + C ln(R)^3 $$`
-` $$ R =  $$ `
+
+`$$ J(\theta_0,\theta_1) = \sum_{i=0} $$`
 ---
 # Developer-Friendly Numeric Structures
 ---

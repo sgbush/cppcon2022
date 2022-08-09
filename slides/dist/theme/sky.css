@@ -234,7 +234,6 @@ section.has-dark-background, section.has-dark-background h1, section.has-dark-ba
   font-family: var(--r-code-font);
   text-transform: none;
   tab-size: 2;
-  color: cornflowerblue;
 }
 
 .reveal pre code {

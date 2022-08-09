@@ -23,6 +23,10 @@ Monokai style - ported by Luigi Maselli - http://grigio.org
   color: #66d9ef;
 }
 
+.hljs-number {
+  color: yellow;
+}
+
 .hljs-class .hljs-title {
   color: white;
 }
