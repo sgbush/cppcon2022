@@ -1,0 +1,4 @@
+# ignore binary files
+**/*.bin
+**/*.elf
+
