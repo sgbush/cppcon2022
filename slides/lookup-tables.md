@@ -1,4 +1,3 @@
----
 # Create Lookup Tables Using Compile-Time Expressions
 ---
 # Compiler-Driven Lookup Table Generation
@@ -185,13 +184,25 @@ Symbol table '.symtab' contains 41 entries:
     39: 0000000000000000     0 NOTYPE  WEAK   DEFAULT  UND _ITM_registerTMCloneTable
     40: 0000000000000000     0 FUNC    GLOBAL DEFAULT  UND _ZNSt8ios_base4InitD1Ev@GLIBCXX_3.4```
 ---
-# Developer-Friendly Numeric Structures
----
-## Code
-```c++[1|2-4]
-void Function(int value)
+# Compiler-Driven Lookup Table Generation
+* *Portability*: Standard Library math functions are not guaranteed to be `constexpr`
+* *Solution*: Use a purpose-built compile-time math library such as [gcem](https://github.com/kthohr/gcem)
+
+```c++
+#include "gcem.hpp"
+template<size_t N>
+constexpr float ThermistorValue(const std::array<float,N> coefficients, const float R)
 {
-    return;
+    float denom = 0.0;
+    size_t index = 0;
+    for( auto& coeff : coefficients )
+    {
+        denom += coeff*gcem::pow(gcem::log(R), index);
+        index += 1;
+    }
+    float T = 1.0/denom;
+
+    return T;
 }
 ```
 
