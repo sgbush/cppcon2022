@@ -34,8 +34,9 @@ constexpr float VoltageFromCode(const float Vref, const size_t n, const uint16_t
     return V;
 }
 
+template<size_t N>
 constexpr std::array<float,256>
-ThermistorTable(std::array<float,3> coeff, const float R0, const float V0, const float Vref)
+ThermistorTable(std::array<float,N> coeff, const float R0, const float V0, const float Vref)
 {
     std::array<float,256> table = {0};
 

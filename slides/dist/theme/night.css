@@ -144,6 +144,10 @@ section.has-light-background, section.has-light-background h1, section.has-light
   font-style: italic;
 }
 
+.reveal li code {
+  color: greenyellow;
+}
+
 .reveal ol,
 .reveal dl,
 .reveal ul {
@@ -240,6 +244,7 @@ section.has-light-background, section.has-light-background h1, section.has-light
 
 .reveal .code-wrapper code {
   white-space: pre;
+  font-size: 80%;
 }
 
 .reveal table {

@@ -147,6 +147,10 @@ html * {
   font-style: italic;
 }
 
+.reveal li code {
+  color: greenyellow;
+}
+
 .reveal ol,
 .reveal dl,
 .reveal ul {
@@ -243,6 +247,7 @@ html * {
 
 .reveal .code-wrapper code {
   white-space: pre;
+  font-size: 80%;
 }
 
 .reveal table {
