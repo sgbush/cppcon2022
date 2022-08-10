@@ -33,7 +33,8 @@ Better: Incorporate governing equations into the code, and let the compiler gene
 `$$ \color{orange} V_{x} = code \cdot \frac{V_{0}}{2^{n}} $$`
 ---
 # Compiler-Driven Lookup Table Generation
-```c++
+Table Generation
+```c++[30-32|36-43|23-28|16-21|1-14|6-10]
 template<size_t N>
 constexpr float ThermistorValue(const std::array<float,N> coefficients, const float R)
 {
@@ -79,6 +80,21 @@ ThermistorTable(std::array<float,N> coeff, const float R0, const float V0, const
     }
 
     return table;
+}
+```
+---
+# Compiler-Driven Lookup Table Generation
+Instantiation
+```c++
+static constexpr std::array<float,4> ThermistorCoefficients { 1.0e-3, 1.0e-4, 1.0e-6, 1.0e-8 };
+
+constexpr auto ThermistorLookup = ThermistorTable(ThermistorCoefficients, 10.0e3, 3.3f, 3.3f);
+
+int main(int , char** )
+{
+
+    for( auto element : ThermistorLookup ) std::cout << element << "\r\n";
+
 }
 ```
 ---
@@ -205,6 +221,14 @@ constexpr float ThermistorValue(const std::array<float,N> coefficients, const fl
     return T;
 }
 ```
+---
+# Compiler-Driven Lookup Table Generation
+* Lookup tables can be very fast
+    * Sometimes critical for embedded, real-time applications
+* We can place the design support in the source code
+    * No external processes to cause mistakes
+    * No complexities in the build process
+* Tables reside in nonvolatile memory rather than precious RAM
 
 
 
