@@ -27,7 +27,7 @@ The Procter & Gamble Company
 * Macro-free code {in|ex}clusion
 * Relentless use of `enum`s
 * Use `std::chrono` like a boss
-* Create `mcu::random_device` and get `random` stuff for free
+* Create `mcu::random_device` and get `std::random` stuff for free
 * Heap memory management for allocate-once 
 * Override `new()` for fine-grained memory tracking
 * Use linker symbols in application code
