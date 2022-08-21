@@ -9,6 +9,7 @@
 #include <string>
 #include <cstddef>
 #include <cstring>
+#include <chrono>
 
 extern "C" int _write(int, const void *, size_t);
 
@@ -104,6 +105,11 @@ class FileStream
         mRadixSetting = radix;
 
         return *this;
+    }
+    FileStream& operator<<(std::chrono::milliseconds time)
+    {
+        operator<<(time.count());
+        operator<<("ms");
     }
     size_t Descriptor() { return mFileDescriptor; }
 };
