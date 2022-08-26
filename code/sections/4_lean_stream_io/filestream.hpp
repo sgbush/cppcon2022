@@ -110,6 +110,8 @@ class FileStream
     {
         operator<<(time.count());
         operator<<("ms");
+
+        return *this;
     }
     size_t Descriptor() { return mFileDescriptor; }
 };
