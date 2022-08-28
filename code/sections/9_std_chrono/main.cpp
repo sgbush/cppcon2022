@@ -5,21 +5,13 @@
 #include <chrono>
 #include <functional>
 #include <string_view>
-#include <iostream>
 #include <cmath>
 
-#include "../4_lean_stream_io/filestream.hpp"
+#include "mcu/filestream.hpp"
 
 
 
 using namespace std::chrono;
-
-std::ostream& operator<<(std::ostream& stream, microseconds interval)
-{
-    stream << interval.count() << "us";
-
-    return stream;
-}
 
 template<typename T>
 void Benchmark(const std::function<void()>& f, const std::string_view label)
@@ -28,7 +20,7 @@ void Benchmark(const std::function<void()>& f, const std::string_view label)
     f();        // <--- function to be timed
     auto elapsed = high_resolution_clock::now() - start;
 
-    std::cout << label << " : " << duration_cast<T>( elapsed ) << "\r\n";
+    mcu::debug << label << " : " << mcu::FileStream::RadixEnum::Decimal << duration_cast<T>( elapsed ) << "\r\n";
 }
 
 void MyExpensiveFunction()
@@ -42,8 +34,21 @@ void MyExpensiveFunction()
 }
 
 int main(int , char** )
-{
-    Benchmark<microseconds>(MyExpensiveFunction, "Trig function");
+{    
+    mcu::debug << "Application start...\r\n";
+
+    auto timeout = high_resolution_clock::now() + seconds(1);
+
+    while (true)
+    {
+        Benchmark<microseconds>(MyExpensiveFunction, "Trig function");
+
+        while ( high_resolution_clock::now() < timeout ) continue;
+        timeout = high_resolution_clock::now() + seconds(1);
+    }
 
     std::exit(0);
 }
+
+
+

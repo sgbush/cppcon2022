@@ -1,4 +1,9 @@
 # ignore binary files
 **/*.bin
 **/*.elf
+**/*.hex
+
+# ignore linker products
+**/output.map
+
 

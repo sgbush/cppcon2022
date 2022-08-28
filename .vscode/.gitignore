@@ -1,0 +1,6 @@
+
+
+# ignore debug state files
+.cortex-debug.*
+
+

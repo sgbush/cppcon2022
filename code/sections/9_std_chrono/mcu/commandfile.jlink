@@ -1,0 +1,5 @@
+reset
+halt
+loadfile main.hex
+reset
+qc
