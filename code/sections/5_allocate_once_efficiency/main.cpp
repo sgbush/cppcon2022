@@ -10,7 +10,7 @@
 
 static size_t AllocatedBytes = 0;
 
-constexpr bool use_arena = true;
+constexpr bool use_arena = false;
 
 void* operator new(size_t size)
 {
@@ -35,6 +35,15 @@ void operator delete(void* ptr)
         free(ptr);
     }
 }
+
+void operator delete(void* ptr, size_t )
+{
+    if constexpr ( !use_arena )
+    {
+        free(ptr);
+    }
+}
+
 
 class CalculationNode
 {
@@ -76,7 +85,8 @@ size_t CalculationNode::NodeCount = 0;
 
 int main(int , char** )
 {
-    CalculationNode tree(10);
+
+    CalculationNode* tree = new CalculationNode(10);
 
     std::cout << "Node count=" << CalculationNode::NodeCount << "\r\n";
     std::cout << "Class size=" << sizeof(CalculationNode) << "( " << sizeof(std::vector<CalculationNode::NodeHandle>) << " + " << sizeof(size_t) << " )" << "\r\n";
