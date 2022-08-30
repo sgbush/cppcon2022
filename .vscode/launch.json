@@ -8,7 +8,7 @@
             "name": "JLink Debug",
             "request": "launch",
             "type": "cortex-debug",
-            "executable": "${workspaceFolder}/code/sections/9_std_chrono/mcu/main.elf",
+            "executable": "${workspaceFolder}/code/sections/5_allocate_once_efficiency/mcu/main.elf",
             "cwd": "${workspaceFolder}",
             "device": "stm32h743zi",
             "runToEntryPoint": "main",

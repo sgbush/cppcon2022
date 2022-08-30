@@ -10,7 +10,7 @@ echo "Using compiler $CXX"
 
 ARCHFLAGS="-march=armv7e-m+fp.dp -mfpu=fpv5-sp-d16 -mfloat-abi=hard -mtune=cortex-m7"
 ERRORFLAGS="-Wall -Wextra -Wpedantic -Wno-psabi -Wno-volatile"
-RUNFLAGS="-fno-rtti -fno-exceptions -std=c++20"
+RUNFLAGS="-fno-rtti -fno-exceptions -std=c++20 -fcheck-new"
 OPTFLAGS="-ggdb -O0"
 LINKFLAGS="-ffunction-sections -fdata-sections --specs=nano.specs -Wl,--gc-sections -Wl,-Map=output.map"
 CXXFLAGS="$ARCHFLAGS $ERRORFLAGS $RUNFLAGS $OPTFLAGS $LINKFLAGS"
@@ -18,7 +18,7 @@ CXXFLAGS="$ARCHFLAGS $ERRORFLAGS $RUNFLAGS $OPTFLAGS $LINKFLAGS"
 LDSCRIPT="default.ld"
 
 ASRCS="boot.asm"
-CSRCS="chrono.cpp clock.cpp system_init.cpp usart.cpp syscalls.cpp filestream.cpp ../main.cpp"
+CSRCS="chrono.cpp clock.cpp system_init.cpp usart.cpp syscalls.cpp filestream.cpp main.cpp"
 INCLUDES="."
 
 
