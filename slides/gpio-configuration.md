@@ -65,10 +65,10 @@ static const std::array<GPIODEF, 2> gpiodefs = {{
 # Declarative GPIO
 Configuring and Using IO Definitions
 * Preferred: Configure all in one go
-* Passing around IO Defs to delegates
+* Not Preferred: Passing around IO Defs to delegates
 ---
 # Declarative GPIO
-Configuring
+Configuring - write one hardware-specific function
 ```c++
 bool Configure(const GPIODEF& def)
 {
@@ -97,8 +97,98 @@ bool Configure(const T& definitions)
 ```
 ---
 # Declarative GPIO
+Passing GPIO references around 
+```c++ 
+struct SPIBus
+{
+    SPIBus(SPI_TypeDef* peripheral) {  }
+};
+
+struct SPIProtocol
+{
+    enum class SPIMode { Mode1, Mode2, Mode3, Mode4 };
+    SPIProtocol(SPIMode mode, uint32_t speed) {  }
+};
+
+struct SPIConnection
+{
+    SPIConnection(const SPIBus& bus, 
+                    const SPIProtocol& conn, 
+                    const GPIODEF& chipselect) {  }
+};
+```
 ---
 # Declarative GPIO
+Passing GPIO references around - better
+```c++ [1-18|6|7-17|21-37|25-28|30-37]
+class GPIOAssertFunctor
+{
+    const GPIODEF& mGPIO;
 
+    public:
+    constexpr GPIOAssertFunctor(const GPIODEF& io) : mGPIO(io) {}
+    void operator()(bool enable) const
+    {
+        if ( enable )
+        {
+            mGPIO.GPIO->ODR |= ( 0b1 << mGPIO.PinNumber );
+        }
+        else
+        {
+            mGPIO.GPIO->ODR &= ~( 0b1 << mGPIO.PinNumber );
+        }
+    }
+};
+
+
+struct SPIConnection2
+{
+    const GPIOAssertFunctor& mEnableFunction;
+
+    SPIConnection2(const SPIBus& bus, 
+                    const SPIProtocol& conn, 
+                    const GPIOAssertFunctor& enable) 
+            : mEnableFunction(enable) {  }
+
+    bool ReadWrite(std::span<char> outdata, 
+                    std::span<char> indata, 
+                    size_t length)
+    {
+        mEnableFunction(true);
+        // write to the bus....
+        mEnableFunction(false);
+    }
+};
+```
+---
+# Declarative GPIO
+```c++ [1-3|5-6|6-22]
+class AssertType {};
+class AssertTypeLogicHigh : public AssertType { static constexpr bool ValueWhenAsserted = true; };
+class AssertTypeLogicLow : public AssertType { static constexpr bool ValueWhenAsserted = false; };
+
+template<typename Assert> requires std::derived_from<Assert,AssertType>
+class GPIOAssertFunctor2
+{
+    const GPIODEF& mGPIO;
+    public:
+    constexpr GPIOAssertFunctor2(const GPIODEF& io) : mGPIO(io) {}
+    void operator()(bool enable)
+    {
+        if ( enable == Assert::ValueWhenAsserted )
+        {
+            mGPIO.GPIO->ODR |= ( 0b1 << mGPIO.PinNumber );
+        }
+        else
+        {
+            mGPIO.GPIO->ODR &= ~( 0b1 << mGPIO.PinNumber );
+        }
+    }
+};
+```
+---
+# Declarative GPIO
+* Centralize your IO definitions
+* Abstract IO functions - with little or no cost
 
 
