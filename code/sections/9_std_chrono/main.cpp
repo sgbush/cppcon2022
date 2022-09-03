@@ -21,6 +21,12 @@ std::ostream& operator<<(std::ostream& stream, microseconds interval)
     return stream;
 }
 
+// implement our own now() function, which in the embedded application would be based on the hardware timer
+std::chrono::time_point<std::chrono::high_resolution_clock> std::chrono::high_resolution_clock::now()
+{
+    return std::chrono::time_point<std::chrono::high_resolution_clock>(std::chrono::milliseconds(0));
+}
+
 template<typename T>
 void Benchmark(const std::function<void()>& f, const std::string_view label)
 {

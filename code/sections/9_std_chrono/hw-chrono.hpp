@@ -20,7 +20,7 @@ struct ClockTreeStruct ClockTree { .pclk2 = 64'000'000 };
 
 static TIM_TypeDef* ChronoHWTimer = nullptr;
 
-bool SteadyClockConfigure(TIM_TypeDef* timer, volatile uint32_t& rccreg, const uint32_t rccvalue)
+bool MicrosecondClockConfigure(TIM_TypeDef* timer, volatile uint32_t& rccreg, const uint32_t rccvalue)
 {
     bool success = true;
     const uint32_t timer_freq = 1'000'000;
