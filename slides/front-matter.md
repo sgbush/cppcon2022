@@ -16,8 +16,9 @@ The Procter & Gamble Company
     * Numerous smart devices (see recent CES shows)
 * Embedded product developer, C++ evangelist
 --
-# About Me
-<image src="assets/TI_IA_thermistor_figure1.jpg"></image>
+<image src="assets/PGBrands.png" style="max-width: 100%;"></image>
+--
+
 ---
 # Agenda
 * Compile-Time Lookup Table Generation
