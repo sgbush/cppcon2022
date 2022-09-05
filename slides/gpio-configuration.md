@@ -2,7 +2,7 @@
 ---
 # Declarative GPIO
 The Old Way
-```c++ [1-6|10-11|13-17]
+```c++ [1|2-6|10-11|13-17]
 GPIOInit_t config;
 config.PinNumber = 1;
 config.Mode = GPIO_MODE_PUSH_PULL;
@@ -25,7 +25,7 @@ GPIO_WritePin(GPIOA, 4, GPIO_LOGIC_LOW);
 ---
 # Declarative GPIO
 Better Way: Strong types in an iterable container
-```c++ [1-12|13-30]
+```c++ [1-12|13|15-20|13-30]
 using GPIODEF = \
 struct IODefStuct {
     GPIO_TypeDef* GPIO;

@@ -19,14 +19,15 @@ main.cpp -o main.elf && arm-none-eabi-objcopy ...
 ```
 <!-- .element: class="fragment" -->
 ```console
-$ du --bh ./main.bin
-411K    main.bin
+$ du -bh main-bare.bin main-conventional.bin
+65K     main-bare.bin
+413K    main-conventional.bin
 ```
 <!-- .element: class="fragment" -->
 ---
 # Lean Stream-Based IO
 Create a Lightweight Filestream Object
-```c++
+```c++ [1-4|5-6|8-13|15-22|23-26]
 namespace mcu
 {
 class FileStream
@@ -78,6 +79,8 @@ extern "C" int _write(int fd, const void* data, size_t length)
         case 2:
             UARTWrite((const char*)data, length);
             break;
+        case 3:
+            UDPWrite(connection, (const char*)data, length)
         ...
     }
 }
@@ -108,8 +111,9 @@ int main(int , char** )
 ```
 ```console
 $ du -bh *.bin
+65K     main-bare.bin
 66K     main-better.bin
-411K    main-conventional.bin
+413K    main-conventional.bin
 ```
 <!-- .element: class="fragment" -->
 ---
@@ -127,7 +131,7 @@ void TroublesomeFunction()
 ---
 # Lean Stream-Based IO
 Extending to Other Types
-```c++
+```c++ [1-2|4-10|12-14]
 template<typename T>
 class Tensor { ... };
 

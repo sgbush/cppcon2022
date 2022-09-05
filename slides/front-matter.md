@@ -18,21 +18,19 @@ The Procter & Gamble Company
 --
 <image src="assets/PGBrands.png" style="max-width: 100%;"></image>
 --
-
+<image src="assets/CESProducts.png" style="max-width: 100%;"></image> 
+---
+# Objective
+Making embedded code easier (and more pleasant) to write and maintain
 ---
 # Agenda
-* Compile-Time Lookup Table Generation
-* User-Defined Literals for Developer-Friendly Constructs
 * GPIO configuration
+* Compile-Time Lookup Table Generation
+* Developer-Friendly Numeric Constructs
 * Lean stream-based IO
-* Macro-free code {in|ex}clusion
-* Relentless use of `enum`s
-* Use `std::chrono` like a boss
-* Create `mcu::random_device` and get `std::random` stuff for free
 * Heap memory management for allocate-once 
-* Override `new()` for fine-grained memory tracking
-* Use linker symbols in application code
-* (Optional) Free yourself from your IDE
+* Use `std::chrono` like a boss
+* Create `random_device` and get `std::random` stuff for free
 ---
 # Companion Repository
 [(https://github.com/sgbush/cppcon2022](https://github.com/sgbush/cppcon2022)

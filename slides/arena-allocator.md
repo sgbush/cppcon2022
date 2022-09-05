@@ -8,6 +8,7 @@
 * Heap errors have no graceful resolution  <!-- .element: class="fragment" -->
 * Many applications stick to static allocation  <!-- .element: class="fragment" -->
 * Off Limits:&emsp;std::vector&emsp;std::map&emsp;std::list&emsp;std::deque   <!-- .element: class="fragment" -->
+Notes: Describe the scenario where this does not apply - where allocation is only done at configuration time and not during run
 ---
 # Using Heap in Embedded Applications
 Use in allocate-once scenarios
@@ -37,13 +38,53 @@ Notes: Point out the problem with this example - it proliferates allocations wit
 * See also Lakos (2017) and Steagall (2017) <!-- .element: class="fragment" -->
 ---
 # Use Arena Allocators
+Overriding the global `new` operator
 ```c++
 void* operator new(size_t size)
 {
-    constexpr size_t ArenaSize = 1'000'000;
+    static constexpr size_t ArenaSize = 1'000;
     static char Arena[ArenaSize];
 
+    auto ptr = Arena + AllocatedBytes;
     AllocatedBytes += size;
-    return (Arena + AllocatedBytes);
+    return ptr;
 }
 ```
+Notes: Point out that the pointer really should be aligned, and should return nullptr when arena is exhausted
+---
+# Use Arena Allocators
+Overriding `new` on a per-class basis
+```c++ [1-9|11-24]
+template<typename T>
+class ArenaAllocator
+{
+    static constexpr size_t ArenaSize = 1'000;
+    static char Arena[ArenaSize];
+
+    public:
+    T* allocate(size_t size) { /* ... */ }
+};
+
+class CalculationNode
+{
+    public:
+    using NodeHandle = std::unique_ptr<CalculationNode>;
+
+    private:
+    std::vector<NodeHandle,ArenaAllocator<NodeHandle>> mCollectionOfNodes;
+
+    void* operator new(size_t size)
+    {
+        ArenaAllocator<char> alloc;
+        return alloc.allocate(size);
+    }
+};
+```
+Notes: This example suggests a graph calculation - lots of nodes, all very small, so lots of allocations with a lot of waste
+---
+# Use Arena Allocators
+Demo Time
+Notes: Run the example first without arena allocator, then with.  The example allocates size_t (4 bytes) until exhausted.
+---
+# Use Arena Allocators
+It is possible to do runtime allocation while avoiding pitfalls of fragmentation, and to avoid heap overhead.  Be safe.
