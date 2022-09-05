@@ -1,6 +1,6 @@
 #!/bin/bash
 
-CXX=$(find /usr/bin /opt/arm -name arm-none-eabi-g++ -print -quit)
+CXX=$(find -L /opt/arm -name arm-none-eabi-g++ -print -quit)
 [[ -z $CXX ]] && { echo "Compiler not found!"; exit -1; }
 
 $CXX --version
@@ -11,9 +11,14 @@ CXXFLAGS="-g0 -Os -std=c++20 \
 -fno-rtti -fno-exceptions -ffunction-sections \
 --specs=nosys.specs -Wl,--gc-sections"
 
-OBJCOPY=$(find /usr/bin /opt/arm -name arm-none-eabi-objcopy)
+OBJCOPY=$(find -L /opt/arm -name arm-none-eabi-objcopy)
 [[ -z $OBJCOPY ]] && { echo "Object copy not found!"; exit -1; }
 
+
+$CXX $CXXFLAGS main-bare.cpp -o main-bare.elf
+$OBJCOPY --output-format binary main-bare.elf main-bare.bin
+SIZE1=$(du --bytes main-bare.bin | sed --regexp-extended --expression 's/([0-9]+)[ \t]+[.a-z\-]+/\1/')
+echo "Reference size = " $SIZE0
 
 $CXX $CXXFLAGS main-conventional.cpp -o main-conventional.elf
 $OBJCOPY --output-format binary main-conventional.elf main-conventional.bin
@@ -25,7 +30,8 @@ $OBJCOPY --output-format binary main-better.elf main-better.bin
 SIZE2=$(du --bytes main-better.bin | sed --regexp-extended --expression 's/([0-9]+)[ \t]+[.a-z\-]+/\1/')
 echo "Improved size = " $SIZE2
 
-echo "Difference = " $(expr $SIZE1 - $SIZE2)
+echo "Difference = " $(expr $SIZE1 - $SIZE0)
+echo "Difference = " $(expr $SIZE2 - $SIZE0)
 
 
 
