@@ -36,28 +36,4 @@ bool MicrosecondClockConfigure(TIM_TypeDef* timer, volatile uint32_t& rccreg, co
 }
 
 
-namespace mcu
-{
-class high_resolution_clock
-{
-    public:
-    using rep = size_t;
-    using period = std::chrono::microseconds;
-    using duration = std::chrono::duration<rep,period>;
-    using time_point = std::chrono::time_point<mcu::high_resolution_clock>;
-
-    public:
-    static constexpr bool is_steady = false;
-    static time_point now() noexcept
-    {
-        return time_point( duration( static_cast<rep>(ChronoHWTimer->CNT) ) );
-    }
-};
-}
-
-
-namespace std::chrono
-{
-// using high_resolution_clock = mcu::high_resolution_clock;
-}
 

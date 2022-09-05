@@ -1,12 +1,14 @@
 #!/bin/bash
 
-CXX=$(find -L /opt/arm/arm-none-eabi -name arm-none-eabi-g++ -print -quit)
+CXX=$(find -L /opt/arm/ -name arm-none-eabi-g++ -print -quit)
+[[ -z $CXX ]] && { echo "Compiler not found!"; exit -1; }
 
-OBJCOPY=$(find -L /opt/arm/arm-none-eabi -name arm-none-eabi-objcopy -print -quit)
+OBJCOPY=$(find -L /opt/arm/ -name arm-none-eabi-objcopy -print -quit)
+[[ -z $OBJCOPY ]] && { echo "Object copy not found!"; exit -1; }
 
-JLINK=$(find -L /opt/segger/JLink -name JLinkExe -print -quit)
+JLINK=$(find -L /opt/segger/ -name JLinkExe -print -quit)
+[[ -z $JLINK ]] && { echo "JLink not found!"; exit -1; }
 
-echo "Using compiler $CXX"
 
 ARCHFLAGS="-march=armv7e-m+fp.dp -mfpu=fpv5-sp-d16 -mfloat-abi=hard -mtune=cortex-m7"
 ERRORFLAGS="-Wall -Wextra -Wpedantic -Wno-psabi -Wno-volatile"
@@ -25,6 +27,7 @@ INCLUDES="."
 ELF="main.elf"
 HEX="main.hex"
 
+echo "Using compiler $CXX"
 echo "Compiling..."
 $CXX $CXXFLAGS -I $INCLUDES -x assembler $ASRCS -x c++ $CSRCS -o $ELF -T $LDSCRIPT
 RETVAL=$?
@@ -38,12 +41,10 @@ fi
 
 echo "Using objcopy $OBJCOPY"
 echo "Converting..."
-
 $OBJCOPY -O ihex $ELF $HEX
 
 echo "Using JLink $JLINK"
 echo "Flashing..."
-
 $JLINK -nogui 1 -device stm32h743zi -if SWD -speed 4000 -autoconnect 1 -CommandFile commandfile.jlink > /dev/null
 RETVAL=$?
 
