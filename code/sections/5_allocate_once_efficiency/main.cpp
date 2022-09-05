@@ -8,7 +8,6 @@
 #include <malloc.h>
 #include <iostream>
 
-static size_t AllocatedBytes = 0;
 
 constexpr bool use_arena = false;
 
@@ -16,11 +15,13 @@ void* operator new(size_t size)
 {
     constexpr size_t ArenaSize = 1'000'000;
     static char Arena[ArenaSize];
+    static size_t AllocatedBytes = 0;
 
-    AllocatedBytes += size;
     if constexpr ( use_arena )
     {
-        return (Arena + AllocatedBytes);
+        auto ptr = Arena + AllocatedBytes;
+        AllocatedBytes += size;
+        return ptr;
     }
     else
     {
