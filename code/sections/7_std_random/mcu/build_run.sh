@@ -21,7 +21,7 @@ LDSCRIPT="default.ld"
 
 ASRCS="boot.asm"
 CSRCS="chrono.cpp clock.cpp system_init.cpp usart.cpp syscalls.cpp filestream.cpp main.cpp"
-INCLUDES="."
+INCLUDES=".."
 
 
 ELF="main.elf"

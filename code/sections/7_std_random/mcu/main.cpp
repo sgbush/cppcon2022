@@ -3,27 +3,37 @@
 
 #include <cstddef>
 #include <random>
-#include <iostream>
 #include <cmath>
 #include <array>
+#include <limits>
 
 #include "bimodal-dist.hpp"
 #include "filestream.hpp"
 
 #include "stm32h743xx.h"
 
-void RNGConfigure()
-{
-    RCC->AHB2ENR |= RCC_AHB2ENR_RNGEN;
-    RNG->CR |= RNG_CR_RNGEN;
-}
 
-std::random_device::result_type std::random_device::operator()()
+namespace mcu
 {
-    while ( !(RNG->SR & RNG_SR_DRDY) ) continue;
-    return RNG->DR;
-}
+class random_device
+{
+    public:
+    using result_type = unsigned int;
+    static constexpr result_type min() { return std::numeric_limits<result_type>::min(); }
+    static constexpr result_type max() { return std::numeric_limits<result_type>::max(); }
 
+    random_device()
+    {
+        RCC->AHB2ENR |= RCC_AHB2ENR_RNGEN;
+        RNG->CR |= RNG_CR_RNGEN;
+    }
+    result_type operator()()
+    {
+        while ( !(RNG->SR & RNG_SR_DRDY) ) continue;
+        return RNG->DR;
+    }
+};
+}
 
 template<typename T>
 T Clamp(T value, T minvalue, T maxvalue)
@@ -34,7 +44,7 @@ T Clamp(T value, T minvalue, T maxvalue)
 int main(int , char** )
 {
     BimodalDistrubution dist;
-    std::random_device device;
+    mcu::random_device device;
 
     std::array<size_t,64> pdf = {0};
 
@@ -49,7 +59,7 @@ int main(int , char** )
     }
     for ( auto binheight : pdf )
     {
-        for (int i=0; i < binheight/20; i += 1) mcu::debug << "*";
+        for (unsigned int i=0; i < binheight/20; i += 1) mcu::debug << "*";
         mcu::debug << "\r\n";
     }
     return 0;
