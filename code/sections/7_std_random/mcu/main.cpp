@@ -21,12 +21,14 @@ class random_device
     using result_type = unsigned int;
     static constexpr result_type min() { return std::numeric_limits<result_type>::min(); }
     static constexpr result_type max() { return std::numeric_limits<result_type>::max(); }
+    constexpr double entropy() const noexcept { return 32.0; }
 
     random_device()
     {
         RCC->AHB2ENR |= RCC_AHB2ENR_RNGEN;
         RNG->CR |= RNG_CR_RNGEN;
     }
+    random_device& operator=(const random_device& other) = delete;
     result_type operator()()
     {
         while ( !(RNG->SR & RNG_SR_DRDY) ) continue;
