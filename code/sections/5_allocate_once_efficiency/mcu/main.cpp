@@ -12,7 +12,7 @@
 
 static size_t AllocatedBytes = 0;
 
-static constexpr bool use_arena = true;
+static constexpr bool use_arena = false;
 
 void* operator new(size_t size)
 {
@@ -54,6 +54,8 @@ int main(int , char** )
 {
     size_t* ptr = nullptr;
 
+    mcu::debug << "Application start...\r\n";
+
     size_t index = 0;
     while ( (ptr = new size_t) != nullptr )
     {
@@ -61,7 +63,7 @@ int main(int , char** )
     }
 
     // delay a little to allow serial port to attach
-    auto timeout = std::chrono::high_resolution_clock::now() + std::chrono::seconds(3);
+    auto timeout = std::chrono::high_resolution_clock::now() + std::chrono::seconds(5);
     while ( std::chrono::high_resolution_clock::now() < timeout ) continue;
 
     mcu::debug << "Number of allocations: " << mcu::FileStream::RadixEnum::Decimal << index << "\r\n";
