@@ -13,9 +13,41 @@
 
 static USART_TypeDef* usart = nullptr;
 
-using fifo = std::queue<char, std::list<char>>;
-std::unique_ptr<fifo> txfifo = nullptr;
 
+template<typename T, size_t N>
+class ringbuffer
+{
+    private:
+    T mBuffer[N];
+    size_t mReadIndex;
+    size_t mWriteIndex;
+
+    public:
+    void push(T value)
+    {
+        if ( ( mWriteIndex != (mReadIndex-1) ) && !( (mWriteIndex == 0) && (mReadIndex == N) ) )
+        {
+            mBuffer[mWriteIndex] = value;
+            mWriteIndex += 1;
+            if ( mWriteIndex == N ) mWriteIndex = 0;
+        }
+    }
+    T pop()
+    {
+        T element;
+        if ( mWriteIndex != mReadIndex )
+        {
+            element = mBuffer[mReadIndex];
+            mReadIndex += 1;
+            if ( mReadIndex == N ) mReadIndex = 0;
+        }
+        return element;
+    }
+    T front() { return mBuffer[mReadIndex]; }
+    bool empty() { return (mReadIndex==mWriteIndex); }
+};
+
+ringbuffer<char,2048> txfifo;
 
 bool GPIOConfigure()
 {
@@ -38,8 +70,6 @@ bool GPIOConfigure()
 bool SerialCommChannelConfigure(size_t baudrate, size_t )
 {
 	bool success = true;
-
-    txfifo = std::make_unique<fifo>();
 
     uint32_t clk = 0;
 
@@ -71,13 +101,13 @@ extern "C" int _write(int , char *ptr, int len)
 	index = 0;
 	while ( index < len )
 	{
-		txfifo->push(ptr[index]);
+		txfifo.push(ptr[index]);
 		index += 1;
 	}
-    if ( ( !txfifo->empty() ) && (usart->ISR & USART_ISR_TXE_TXFNF) )
+    if ( ( !txfifo.empty() ) && (usart->ISR & USART_ISR_TXE_TXFNF) )
     {
-        usart->TDR = txfifo->front();
-        txfifo->pop();
+        usart->TDR = txfifo.front();
+        txfifo.pop();
         usart->CR1 |= USART_CR1_TCIE;
     }
 
@@ -94,7 +124,7 @@ extern "C" void USART3_IRQHandler()
 	if ( USART3->ISR & USART_ISR_TC )
 	{
         txcount += 1;
-		if ( !txfifo->empty() ) { USART3->TDR = txfifo->front(); txfifo->pop(); }
+		if ( !txfifo.empty() ) { USART3->TDR = txfifo.front(); txfifo.pop(); }
         else USART3->CR1 &= ~(USART_CR1_TCIE);      // disable the interrupt so we don't get repeated TC flags
 		USART3->ICR |= USART_ICR_TCCF;
 	}
