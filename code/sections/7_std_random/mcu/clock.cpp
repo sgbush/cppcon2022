@@ -138,6 +138,9 @@ bool SystemClockConfigure()
     // RCC->CR |= RCC_CR_PLL3ON;   // activate PLL
     // while ( !(RCC->CR & RCC_CR_PLL3RDY) ) continue;
 
+    // HSI48 needed for RNG
+    RCC->CR |= RCC_CR_HSI48ON;
+    while ( !(RCC->CR & RCC_CR_HSI48RDY) ) continue;
 
     // TODO: LSE/LSI/RTC
 

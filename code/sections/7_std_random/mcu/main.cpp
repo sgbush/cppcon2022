@@ -61,7 +61,7 @@ int main(int , char** )
     }
     for ( auto binheight : pdf )
     {
-        for (unsigned int i=0; i < binheight/20; i += 1) mcu::debug << "*";
+        for (size_t i=0; i < binheight/20; i += 1) mcu::debug << "*";
         mcu::debug << "\r\n";
     }
     return 0;
