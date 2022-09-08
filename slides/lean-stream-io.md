@@ -15,13 +15,13 @@ $ arm-none-eabi-g++ -g0 -Os -std=c++20 \
 -Wall -Wextra -Wpedantic -Wno-psabi \
 -fno-rtti -fno-exceptions -ffunction-sections \
 -specs=nosys.specs -Wl,--gc-sections \
-main.cpp -o main.elf && arm-none-eabi-objcopy ...
+main.cpp -o main.elf && arm-none-eabi-objcopy -O binary main.elf main.bin
 ```
 <!-- .element: class="fragment" -->
 ```console
 $ du -bh main-bare.bin main-conventional.bin
-65K     main-bare.bin
-413K    main-conventional.bin
+1.7K    main-bare.bin
+157K    main-conventional.bin
 ```
 <!-- .element: class="fragment" -->
 ---
@@ -111,9 +111,9 @@ int main(int , char** )
 ```
 ```console
 $ du -bh *.bin
-65K     main-bare.bin
-66K     main-better.bin
-413K    main-conventional.bin
+1.7K    main-bare.bin
+2.3K    main-better.bin
+157K    main-conventional.bin
 ```
 <!-- .element: class="fragment" -->
 ---
@@ -128,6 +128,7 @@ void TroublesomeFunction()
 ```console
 0x20
 ```
+<!-- .element: class="fragment" -->
 ---
 # Lean Stream-Based IO
 Extending to Other Types
@@ -139,13 +140,29 @@ FileStream& operator<<(FileStream& stream, const Tensor<float>& tensor)
 {
     for(size_t i=0; i < tensor.Dimension(1); i++)
     {
-        for(size_t j=0; j < tensor.Dimension(0); j++) ...
+        for(size_t j=0; j < tensor.Dimension(0); j++)
+        // ...
+        stream << tensor.Element(i,j);
+        // ...
     }
 }
 
 Tensor<float> result( {10,10} );
 mcu::debug << result;
 ```
+```console
+{ {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, }
+{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, }
+{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, }
+{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, }
+{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, }
+{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, }
+{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, }
+{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, }
+{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, }
+{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, } }
+```
+<!-- .element: class="fragment" -->
 
 
 

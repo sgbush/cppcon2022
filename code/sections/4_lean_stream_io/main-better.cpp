@@ -8,10 +8,6 @@
 #include "filestream.hpp"
 
 
-extern "C" int _write(int, const void *, size_t)
-{
-    return 0;       // trivial implementation of the 'write' syscall
-}
 
 namespace mcu
 {
