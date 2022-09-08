@@ -33,7 +33,7 @@ int main(int , char** )
     }
     for ( auto binheight : pdf )
     {
-        for (int i=0; i < binheight/20; i += 1) std::cout << "*";
+        for (size_t i=0; i < binheight/20; i += 1) std::cout << "*";
         std::cout << "\r\n";
     }
     return 0;
