@@ -21,7 +21,7 @@ class BimodalDistrubution
     float mMode1Weight;
     
     public:
-    BimodalDistrubution() : BimodalDistrubution( ModeParamsType(0.0f,1.0f), ModeParamsType(5.0f,1.0f), 0.7f ) {}
+    BimodalDistrubution() : BimodalDistrubution( ModeParamsType(0.0f,1.0f), ModeParamsType(10.0f,1.0f), 0.7f ) {}
     BimodalDistrubution(const ModeParamsType& mode1, const ModeParamsType& mode2, float weight)
         : mFirstModeDistribution(mode1),
         mSecondModeDistribution(mode2),

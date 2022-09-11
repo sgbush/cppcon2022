@@ -132,7 +132,7 @@ void TroublesomeFunction()
 ---
 # Lean Stream-Based IO
 Extending to Other Types
-```c++ [1-2|4-10|12-14]
+```c++ [1-2|4-13]
 template<typename T>
 class Tensor { ... };
 
@@ -146,7 +146,11 @@ FileStream& operator<<(FileStream& stream, const Tensor<float>& tensor)
         // ...
     }
 }
-
+```
+---
+# Lean Stream-Based IO
+Extending to Other Types
+```c++
 Tensor<float> result( {10,10} );
 mcu::debug << result;
 ```

@@ -141,11 +141,11 @@ class GPIOAssertFunctor
 };
 
 
-struct SPIConnection2
+struct SPIConnection
 {
     const GPIOAssertFunctor& mEnableFunction;
 
-    SPIConnection2(const SPIBus& bus, 
+    SPIConnection(const SPIBus& bus, 
                     const SPIProtocol& conn, 
                     const GPIOAssertFunctor& enable) 
             : mEnableFunction(enable) {  }
@@ -162,17 +162,19 @@ struct SPIConnection2
 ```
 ---
 # Declarative GPIO
-```c++ [1-3|5-6|6-22]
+```c++ [1-5|7-8|8-24]
 class AssertType {};
-class AssertTypeLogicHigh : public AssertType { static constexpr bool ValueWhenAsserted = true; };
-class AssertTypeLogicLow : public AssertType { static constexpr bool ValueWhenAsserted = false; };
+class AssertTypeLogicHigh 
+    : public AssertType { static constexpr bool ValueWhenAsserted = true; };
+class AssertTypeLogicLow 
+    : public AssertType { static constexpr bool ValueWhenAsserted = false; };
 
 template<typename Assert> requires std::derived_from<Assert,AssertType>
-class GPIOAssertFunctor2
+class GPIOAssertFunctor
 {
     const GPIODEF& mGPIO;
     public:
-    constexpr GPIOAssertFunctor2(const GPIODEF& io) : mGPIO(io) {}
+    constexpr GPIOAssertFunctor(const GPIODEF& io) : mGPIO(io) {}
     void operator()(bool enable)
     {
         if ( enable == Assert::ValueWhenAsserted )
@@ -185,6 +187,15 @@ class GPIOAssertFunctor2
         }
     }
 };
+```
+---
+# Declarative GPIO
+```c++
+static const std::array<GPIODEF,12> IOPins = { /* ... */ };
+auto bus = SPIBus(SPI1);
+auto protocol = SPIProtocol(SPIProtocol::SPIMode::Mode1, 1'000'000);
+auto chipselect = GPIOAssertFunctor<AssertTypeLogicLow>(IOPins[4]);
+auto connection = SPIConnection(bus, protocol, chipselect);
 ```
 ---
 # Declarative GPIO

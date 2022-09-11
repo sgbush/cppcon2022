@@ -22,13 +22,14 @@ class random_device
     static constexpr result_type min() { return std::numeric_limits<result_type>::min(); }
     static constexpr result_type max() { return std::numeric_limits<result_type>::max(); }
     constexpr double entropy() const noexcept { return 32.0; }
+    random_device& operator=(const random_device& other) = delete;
 
     random_device()
     {
         RCC->AHB2ENR |= RCC_AHB2ENR_RNGEN;
         RNG->CR |= RNG_CR_RNGEN;
     }
-    random_device& operator=(const random_device& other) = delete;
+
     result_type operator()()
     {
         while ( !(RNG->SR & RNG_SR_DRDY) ) continue;
@@ -48,13 +49,13 @@ int main(int , char** )
     BimodalDistrubution dist;
     mcu::random_device device;
 
-    std::array<size_t,64> pdf = {0};
+    std::array<size_t,32> pdf = {0};
 
     size_t index = 0;
     while ( index < 10'000 )
     {
         auto value = dist(device);
-        auto sub = Clamp( static_cast<size_t>( 64.0f*(value + 15.0f)/30.0f ), size_t(0), size_t(63));
+        auto sub = Clamp( static_cast<size_t>( 32.0f*(value + 15.0f)/30.0f ), size_t(0), size_t(31));
         pdf[sub] += 1;
 
         index += 1;
@@ -62,7 +63,7 @@ int main(int , char** )
     for ( auto binheight : pdf )
     {
         for (size_t i=0; i < binheight/20; i += 1) mcu::debug << "*";
-        mcu::debug << "\r\n";
+        mcu::debug << "\n";
     }
     return 0;
 }

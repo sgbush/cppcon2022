@@ -14,7 +14,7 @@ Notes: Where does this table come from?  It must be maintained separately via sp
 Some considerations
 * Constants in embedded system must be carefully crafted to end up (usually) in the `.rodata` section
     * this results in constants being placed in flash - and not copied to RAM
---
+---
 # Compiler-Driven Lookup Table Generation
 Some considerations
 * It is common for hardware and firmware to have to evolve together
@@ -22,15 +22,15 @@ Some considerations
       <img src="assets/TI_IA_thermistor_figure1.jpg"></img>
 ---
 # Compiler-Driven Lookup Table Generation
-Better: Incorporate governing equations into the code, and let the compiler generate constant tables
+Incorporate governing equations into the code, and let the compiler generate constant tables
 * Steinhart-Hart Model (general form)   
-`$$ \color{orange} \frac{1}{T} = \overset{\infty}{\underset{n=0}{\sum}} a_{n} (\ln(\frac{R}{R_0}))^{n} $$`
+$$ \color{orange} \frac{1}{T} = \overset{\infty}{\underset{n=0}{\sum}} a_{n} (\ln(\frac{R}{R_0}))^{n} $$
 
 * Resistor Divider   
-`$$ \color{orange} R = \frac{V_{x} R_{1}}{V_{0}-V_{x}} $$`
+$$ \color{orange} R = \frac{V_{x} R_{1}}{V_{0}-V_{x}} $$
 
 * Analog Conversion    
-`$$ \color{orange} V_{x} = code \cdot \frac{V_{0}}{2^{n}} $$`
+$$ \color{orange} V_{x} = code \cdot \frac{V_{0}}{2^{n}} $$
 ---
 # Compiler-Driven Lookup Table Generation
 Table Generation
@@ -99,7 +99,7 @@ int main(int , char** )
 ```
 ---
 # Compiler-Driven Lookup Table Generation
-```txt[1|2-100|22|41|63]
+```txt[1|22|41|63]
 $ readelf --sections --wide main.elf
 Section Headers:
   [Nr] Name              Type            Address          Off    Size   ES Flg Lk Inf Al

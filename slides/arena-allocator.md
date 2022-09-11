@@ -33,8 +33,9 @@ Notes: Point out the problem with this example - it proliferates allocations wit
 ---
 # Use Arena Allocators
 * For monotonic, allocate-once applications <!-- .element: class="fragment" -->
+    * Fast
+    * Low overhead
 * Preferably deterministic memory usage <!-- .element: class="fragment" -->
-* ...and failure is an option <!-- .element: class="fragment" -->
 * See also Lakos (2017) and Steagall (2017) <!-- .element: class="fragment" -->
 ---
 # Use Arena Allocators

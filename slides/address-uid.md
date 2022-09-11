@@ -69,7 +69,7 @@ class UUID
 ```
 ---
 # Address-Like Structures
-```c++
+```c++ [1|8-13|14-19|20-25|26-30|32]
 constexpr UUID operator""_uuid(const char* text, size_t length)
 {
     UUID result;

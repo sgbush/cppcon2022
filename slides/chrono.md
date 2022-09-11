@@ -1,4 +1,4 @@
-# Implement One Function to Unlock Time <span>(Functions)</span> <!-- .element: class="fragment" -->
+# Implement One Function to Unlock All of Time <span>(Functions)</span> <!-- .element: class="fragment" -->
 ---
 # Unlock std::chrono
 * Embedded time sources
@@ -9,7 +9,7 @@
     * Time-of-day and calendaring
 ---
 # Unlock std::chrono
-```c++ [3|8-14]
+```c++ [3|6|8-14]
 static TIM_TypeDef* ChronoHWTimer = nullptr;
 
 bool MicrosecondClockConfigure(TIM_TypeDef* timer, volatile uint32_t& rccreg, const uint32_t rccvalue)

@@ -4,7 +4,13 @@ and Get Free ~~Beer~~ Library Code
 ---
 # Scenario
 * You need a random number generator with a multimodal probability distribution
-(image)
+
+<image src="assets/bimodal.png" style="width:600px;"></image> 
+---
+# Scenario
+* This gives a random walk with occasional large changes
+
+<image src="assets/randomwalk.png" style="width:700px;"></image> 
 Notes: This is not so far fetched since we work for a historic candle company
 ---
 <image src="assets/luminary.jpeg" style="width:500px;"></image> 
@@ -22,11 +28,13 @@ class BimodalDistrubution
     std::uniform_real_distribution<float> mWeightingDistribution;
     float mMode1Weight;
 ```
-Notes: We do this to quickly prototype a solution
-Notes: Point out the two normal distributions, and the weighting method between the two
+Notes: We do this to quickly prototype a solution. Point out the two normal distributions, and the weighting method between the two
 ---
 # Fun with Random Numbers
 ```c++
+class BimodalDistrubution
+{
+    ...
     template<typename Generator>
     float operator()(Generator& device)
     {
@@ -46,6 +54,13 @@ Notes: Point out the two normal distributions, and the weighting method between 
     }
 ```
 Notes: Point out how the third distribution is used to pick and choose between the primary mode and secondary
+---
+# Fun with Random Numbers
+```c++
+auto dev = std::random_device();
+auto dist = BimodalDistribution();
+float x = dist(dev);
+```
 ---
 # Fun with Random Numbers
 Demo Time
@@ -76,9 +91,7 @@ class random_device
 };
 }
 ```
-Notes: However, we can run the code nearly unchanged if we have a random_device (hardware available on many MCUs)
-Notes: Since the library defines the std::random_device::operator() inline, we must create a random_device in our own namespace
----
+Notes: However, we can run the code nearly unchanged if we have a random_device (hardware available on many MCUs). Since the library defines the std::random_device::operator() inline, we must create a random_device in our own namespace
 ---
 # Fun with Random Numbers
 Demo Time
