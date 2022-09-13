@@ -119,49 +119,6 @@ struct SPIConnection
 ```
 ---
 # Declarative GPIO
-Passing GPIO references around - better
-```c++ [1-18|6|7-17|21-37|25-28|30-37]
-class GPIOAssertFunctor
-{
-    const GPIODEF& mGPIO;
-
-    public:
-    constexpr GPIOAssertFunctor(const GPIODEF& io) : mGPIO(io) {}
-    void operator()(bool enable) const
-    {
-        if ( enable )
-        {
-            mGPIO.GPIO->ODR |= ( 0b1 << mGPIO.PinNumber );
-        }
-        else
-        {
-            mGPIO.GPIO->ODR &= ~( 0b1 << mGPIO.PinNumber );
-        }
-    }
-};
-
-
-struct SPIConnection
-{
-    const GPIOAssertFunctor& mEnableFunction;
-
-    SPIConnection(const SPIBus& bus, 
-                    const SPIProtocol& conn, 
-                    const GPIOAssertFunctor& enable) 
-            : mEnableFunction(enable) {  }
-
-    bool ReadWrite(std::span<char> outdata, 
-                    std::span<char> indata, 
-                    size_t length)
-    {
-        mEnableFunction(true);
-        // write to the bus....
-        mEnableFunction(false);
-    }
-};
-```
----
-# Declarative GPIO
 ```c++ [1-5|7-8|8-24]
 class AssertType {};
 class AssertTypeLogicHigh 
@@ -185,6 +142,29 @@ class GPIOAssertFunctor
         {
             mGPIO.GPIO->ODR &= ~( 0b1 << mGPIO.PinNumber );
         }
+    }
+};
+```
+---
+# Declarative GPIO
+```c++ [1-2|4|6-9|11-18]
+template<typename Assert>
+struct SPIConnection
+{
+    const GPIOAssertFunctor<Assert>& mEnableFunction;
+
+    SPIConnection(const SPIBus& bus, 
+                    const SPIProtocol& conn, 
+                    const GPIOAssertFunctor<Assert>& enable) 
+            : mEnableFunction(enable) {  }
+
+    bool ReadWrite(std::span<char> outdata, 
+                    std::span<char> indata, 
+                    size_t length)
+    {
+        mEnableFunction(true);
+        // write to the bus....
+        mEnableFunction(false);
     }
 };
 ```

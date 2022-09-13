@@ -23,14 +23,14 @@ Some considerations
 ---
 # Compiler-Driven Lookup Table Generation
 Incorporate governing equations into the code, and let the compiler generate constant tables
-* Steinhart-Hart Model (general form)   
-$$ \color{orange} \frac{1}{T} = \overset{\infty}{\underset{n=0}{\sum}} a_{n} (\ln(\frac{R}{R_0}))^{n} $$
+* Analog Conversion    
+$$ \color{orange} V_{x} = code \cdot \frac{V_{0}}{2^{n}} $$
 
 * Resistor Divider   
 $$ \color{orange} R = \frac{V_{x} R_{1}}{V_{0}-V_{x}} $$
 
-* Analog Conversion    
-$$ \color{orange} V_{x} = code \cdot \frac{V_{0}}{2^{n}} $$
+* Steinhart-Hart Model (general form)   
+$$ \color{orange} \frac{1}{T} = \overset{\infty}{\underset{n=0}{\sum}} a_{n} (\ln(\frac{R}{R_0}))^{n} $$
 ---
 # Compiler-Driven Lookup Table Generation
 Table Generation
@@ -199,28 +199,6 @@ Symbol table '.symtab' contains 41 entries:
     38: 0000000000000000     0 NOTYPE  WEAK   DEFAULT  UND __gmon_start__
     39: 0000000000000000     0 NOTYPE  WEAK   DEFAULT  UND _ITM_registerTMCloneTable
     40: 0000000000000000     0 FUNC    GLOBAL DEFAULT  UND _ZNSt8ios_base4InitD1Ev@GLIBCXX_3.4```
----
-# Compiler-Driven Lookup Table Generation
-* *Portability*: Standard Library math functions are not guaranteed to be `constexpr`
-* *Solution*: Use a purpose-built compile-time math library such as [gcem](https://github.com/kthohr/gcem)
-
-```c++
-#include "gcem.hpp"
-template<size_t N>
-constexpr float ThermistorValue(const std::array<float,N> coefficients, const float R)
-{
-    float denom = 0.0;
-    size_t index = 0;
-    for( auto& coeff : coefficients )
-    {
-        denom += coeff*gcem::pow(gcem::log(R), index);
-        index += 1;
-    }
-    float T = 1.0/denom;
-
-    return T;
-}
-```
 ---
 # Compiler-Driven Lookup Table Generation
 * Lookup tables can be very fast

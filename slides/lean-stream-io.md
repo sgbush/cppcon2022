@@ -54,6 +54,8 @@ class FileStream
     FileSteam& operator<<(const U value) { ... }
     template<typename U> requires std::floating_point<U>
     FileSteam& operator<<(const U value) { ... }
+
+    
 ```
 ---
 # Lean Stream-Based IO

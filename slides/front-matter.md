@@ -1,3 +1,5 @@
+<section data-background="assets/cppcon-banner.png">
+---
 # Modern C++ To Impress Your Embedded Dev Friends
 **Steve Bush** - Research Fellow
 
