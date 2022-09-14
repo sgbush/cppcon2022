@@ -63,9 +63,6 @@ float x = dist(dev);
 ```
 ---
 # Fun with Random Numbers
-Demo Time
----
-# Fun with Random Numbers
 ```c++ [1-3|11-15|17-21]
 namespace mcu
 {
@@ -92,6 +89,13 @@ class random_device
 }
 ```
 Notes: However, we can run the code nearly unchanged if we have a random_device (hardware available on many MCUs). Since the library defines the std::random_device::operator() inline, we must create a random_device in our own namespace
+---
+# Fun with Random Numbers
+```c++
+auto dev = mcu::random_device();
+auto dist = BimodalDistribution();
+float x = dist(dev);
+```
 ---
 # Fun with Random Numbers
 Demo Time

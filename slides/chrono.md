@@ -42,17 +42,6 @@ namespace std::chrono
 ```
 ---
 # Unlock std::chrono
-Choices for clock implementations
-* `std::chrono::system_clock`
-    * Wall time clock (RTC)
-* `std::chrono::steady_clock`
-    * Monotonic clock
-* `std::chrono::high_resolution_clock`
-    * Highest resolution clock
-* `std::chrono::utc_clock`
-* ...
----
-# Unlock std::chrono
 Demo time
 
 

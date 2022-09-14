@@ -1,4 +1,4 @@
-<section data-background="assets/cppcon-banner.png">
+<section data-background="assets/cppcon-banner.png" data-background-size="contain">
 ---
 # Modern C++ To Impress Your Embedded Dev Friends
 **Steve Bush** - Research Fellow

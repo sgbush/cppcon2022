@@ -3,7 +3,8 @@
 # Compiler-Driven Lookup Table Generation
 The Old Way
 ```c++
-const float TemperatureFromThermistor[] = { 25.0, 26.2, 27.5, ... };
+const float TemperatureFromThermistor[] = { 25.0, 26.2, 27.5, ...      };
+//                                     ADC=   0 ,   1 ,   2 , ...  255 // 
 ```
 * Generate via spreadsheet and copy and paste
 * Generate via script and copy and paste
@@ -34,7 +35,21 @@ $$ \color{orange} \frac{1}{T} = \overset{\infty}{\underset{n=0}{\sum}} a_{n} (\l
 ---
 # Compiler-Driven Lookup Table Generation
 Table Generation
-```c++[30-32|36-43|23-28|16-21|1-14|6-10]
+```c++[1-6|8-14|15-29|30-32|34-43]
+constexpr float VoltageFromCode(const float Vref, const size_t n, const uint16_t code)
+{
+    float V = Vref*code/std::pow(2,n);
+
+    return V;
+}
+
+constexpr float ResistanceFromDivider(const float V0, const float V, const float R0)
+{
+    float R = R0*V0*(V0 - V);
+
+    return R;
+}
+
 template<size_t N>
 constexpr float ThermistorValue(const std::array<float,N> coefficients, const float R)
 {
@@ -48,20 +63,6 @@ constexpr float ThermistorValue(const std::array<float,N> coefficients, const fl
     float T = 1.0/denom;
 
     return T;
-}
-
-constexpr float ResistanceFromDivider(const float V0, const float V, const float R0)
-{
-    float R = R0*V0*(V0 - V);
-
-    return R;
-}
-
-constexpr float VoltageFromCode(const float Vref, const size_t n, const uint16_t code)
-{
-    float V = Vref*code/std::pow(2,n);
-
-    return V;
 }
 
 template<size_t N>
@@ -201,7 +202,7 @@ Symbol table '.symtab' contains 41 entries:
     40: 0000000000000000     0 FUNC    GLOBAL DEFAULT  UND _ZNSt8ios_base4InitD1Ev@GLIBCXX_3.4```
 ---
 # Compiler-Driven Lookup Table Generation
-* Lookup tables can be very fast
+* Lookup tables can be very fast or space-saving
     * Sometimes critical for embedded, real-time applications
 * We can place the design support in the source code
     * No external processes to cause mistakes
