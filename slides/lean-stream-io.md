@@ -27,7 +27,7 @@ $ du -bh main-bare.bin main-conventional.bin
 ---
 # Lean Stream-Based IO
 Create a Lightweight Filestream Object
-```c++ [1-4|5-6|8-13|15-22|23-26]
+```c++ [1-4|5-6|8-13|15-22|24-28]
 namespace mcu
 {
 class FileStream
@@ -50,8 +50,10 @@ class FileStream
 
         return *this;
     }
+
     template<typename U> requires std::integral<U>
     FileSteam& operator<<(const U value) { ... }
+
     template<typename U> requires std::floating_point<U>
     FileSteam& operator<<(const U value) { ... }
 
@@ -124,7 +126,7 @@ Add Some Bells and Whistles
 ```c++
 void TroublesomeFunction()
 {
-    mcu::debug << FileStream::RadixEnum::Hexadecimal << 32 << "\r\n";
+    mcu::debug << mcu::FileStream::RadixEnum::Hexadecimal << 32 << "\r\n";
 }
 ```
 ```console
