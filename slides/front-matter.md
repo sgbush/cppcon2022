@@ -17,6 +17,7 @@ The Procter & Gamble Company
 ---
 <image src="assets/PGBrands.png" style="max-width: 100%;"></image>
 ---
+# 
 <image src="assets/CESProducts.png" style="max-width: 100%;"></image> 
 ---
 # Objective
