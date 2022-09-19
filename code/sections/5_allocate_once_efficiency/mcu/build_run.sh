@@ -54,6 +54,8 @@ else
     exit -1
 fi
 
+echo "Connecting to UART..."
+
 stty --file=/dev/ttyACM0 115200
 cat /dev/ttyACM0
 
