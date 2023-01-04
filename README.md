@@ -1,0 +1,6 @@
+# Companion Respository for ***Modern C++ to Impress Your Embedded Dev Friends***
+You should not consider the code contained here to be anything like exemplary C++.  The objective is to provide minimal examples of the various topics I cover in my survey talk.  Most of the examples will compile and run on a PC host, which will probably be illustrative enough for most.  If you are serious about getting the embedded samples to work, you will need:
+* An STM32L476RG Nucleo development board.  It will need to be connected via the debugger USB to the host PC to provide serial output via the virtual UART.
+* A Segger JLink connected to the Nucleo board (bypassing the built-in ST-Link) and the corresponding Segger software installed on the host PC.  Yes, you could use the on-board ST-Link debugger, but you will need to re-work the flashing scripts to use the ST command line tools (which I do not use, and have no useful advice for).
+
+# The code shared in this repository is distributed under an MIT license
