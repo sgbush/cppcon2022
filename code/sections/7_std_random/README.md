@@ -1,0 +1,5 @@
+# Using std::random in embedded
+## PC example
+Run the `build_run.sh` script.  It will compile and run the PC example.  The example will print a crude histogram representing the probability density function.  The PC example simply uses the standard library version of `std::random_device`.  In the MCU example, there is no library version of `std::random_device`, so it is implemented using an MCU peripheral.
+## MCU example
+The needed definition of `std::random_device` is implemented using a hardware RNG.  This assumes an STM32L476 Nucleo board is attached to the PC, and is programmed via a Segger JLink (instead of the on board ST-Link, which I find hard to control via command line).  This is kind of a chore to set up, so you may just want to stick with the PC example above, which will pretty do the same thing.  Take a look at `mcu/main.cpp` for implementation details.

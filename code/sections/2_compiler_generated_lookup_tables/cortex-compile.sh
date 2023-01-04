@@ -19,6 +19,10 @@ $CXX $CXXFLAGS main.cpp -o main.elf
 $OBJCOPY --output-format binary main.elf main.bin
 
 
+echo 'Note the section number:'
+readelf --sections --wide main.elf | grep --color rodata
+echo "Note that the lookup table is in the rodata section:"
+readelf --symbols --wide --demangle main.elf | grep --color ThermistorLookup
 
 
 

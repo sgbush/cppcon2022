@@ -10,6 +10,7 @@
 
 static constexpr std::array<float,4> ThermistorCoefficients { 1.0e-3, 1.0e-4, 1.0e-6, 1.0e-8 };
 
+// this lookup table will be calculated entirely at compile time
 constexpr auto ThermistorLookup = ThermistorTable(ThermistorCoefficients, 10.0e3, 3.3f, 3.3f);
 
 int main(int , char** )

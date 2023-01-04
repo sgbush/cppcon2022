@@ -1,0 +1,5 @@
+# Using std::chrono in embedded
+## PC example
+Run the `build_run.sh` script.  It will compile and run the PC example.  The example will print a function benchmark.  The PC example simply uses the standard library version of `std::chrono::high_resolution_clock`.  In the MCU example, there is no library version of `std::chrono::high_resolution_clock`, so it is implemented using an MCU peripheral.
+## MCU example
+The needed definition of `std::chrono::high_resolution_clock` is implemented using a hardware timer.  This assumes an STM32L476 Nucleo board is attached to the PC, and is programmed via a Segger JLink (instead of the on board ST-Link, which I find hard to control via command line).  This is kind of a chore to set up, so you may just want to stick with the PC example above, which will pretty do the same thing.  Take a look at `mcu/chrono.cpp` for implementation details.
