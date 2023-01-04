@@ -11,11 +11,12 @@
 
 constexpr bool use_arena = false;
 
+static size_t AllocatedBytes = 0;
+
 void* operator new(size_t size)
 {
     constexpr size_t ArenaSize = 1'000'000;
     static char Arena[ArenaSize];
-    static size_t AllocatedBytes = 0;
 
     if constexpr ( use_arena )
     {
@@ -25,6 +26,7 @@ void* operator new(size_t size)
     }
     else
     {
+        AllocatedBytes += size + 8;
         return malloc(size);
     }
 }
@@ -87,7 +89,7 @@ size_t CalculationNode::NodeCount = 0;
 int main(int , char** )
 {
 
-    CalculationNode* tree = new CalculationNode(10);
+    [[maybe_unused]] CalculationNode* tree = new CalculationNode(10);
 
     std::cout << "Node count=" << CalculationNode::NodeCount << "\r\n";
     std::cout << "Class size=" << sizeof(CalculationNode) << "( " << sizeof(std::vector<CalculationNode::NodeHandle>) << " + " << sizeof(size_t) << " )" << "\r\n";
